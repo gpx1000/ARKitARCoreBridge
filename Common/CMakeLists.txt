@@ -16,7 +16,7 @@ set(EXPORTED_HEADERS
     util.h
 )
 
-add_library(Common SHARED ${COMMON_SOURCES})
+add_library(Common STATIC ${COMMON_SOURCES})
 
 target_include_directories( Common INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} )
 

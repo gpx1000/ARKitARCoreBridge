@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "util.h"
+#include "../app/src/main/cpp/jni_interface.h"
 
 #include <unistd.h>
 #include <sstream>
@@ -117,7 +118,7 @@ GLuint CreateProgram(const char* vertex_source, const char* fragment_source) {
 
 bool LoadPngFromAssetManager(int target, const std::string& path) {
 #ifdef __ANDROID__
-  JNIEnv* env = 0; // GetJniEnv();
+  JNIEnv* env = GetJniEnv();
 
   // Put all the JNI values in a structure that is statically initalized on the
   // first call to this method.  This makes it thread safe in the unlikely case
@@ -128,14 +129,14 @@ bool LoadPngFromAssetManager(int target, const std::string& path) {
     jmethodID load_texture_method;
   } jniIds = [env]() -> JNIData {
     constexpr char kHelperClassName[] =
-        "com/google/ar/core/examples/c/helloar/JniInterface";
+        "com/gpxblog/arkitarcorebridge/JniInterface";
     constexpr char kLoadImageMethodName[] = "loadImage";
     constexpr char kLoadImageMethodSignature[] =
         "(Ljava/lang/String;)Landroid/graphics/Bitmap;";
     constexpr char kLoadTextureMethodName[] = "loadTexture";
     constexpr char kLoadTextureMethodSignature[] =
         "(ILandroid/graphics/Bitmap;)V";
-    jclass helper_class = 0; //FindClass(kHelperClassName);
+    jclass helper_class = FindClass(kHelperClassName);
     if (helper_class) {
       helper_class = static_cast<jclass>(env->NewGlobalRef(helper_class));
       jmethodID load_image_method = env->GetStaticMethodID(

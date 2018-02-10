@@ -11,7 +11,7 @@ import java.io.IOException;
 /** JNI interface to native layer. */
 public class JniInterface {
   static {
-    System.loadLibrary("hello_ar_native");
+    System.loadLibrary("native-lib");
   }
 
   private static final String TAG = "JniInterface";
